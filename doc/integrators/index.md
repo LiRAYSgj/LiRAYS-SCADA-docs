@@ -1,0 +1,14 @@
+# Integrators Guide
+
+This section is for teams that connect external systems, tools, or automation workflows to LiRAYS-SCADA.
+
+## Integration Surfaces
+
+- [SDKs](sdk.md): official client libraries and integration guidance.
+- Protocol contract: protobuf schemas in the main repository.
+
+## Reading Path
+
+1. Start with [SDK](sdk.md) to choose the integration approach.
+2. Review the protocol schema when implementing low-level or custom clients.
+3. Align your client and server versions to avoid protocol drift.

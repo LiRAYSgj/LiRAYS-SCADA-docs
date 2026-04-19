@@ -1,0 +1,14 @@
+# Product Roadmap
+
+This roadmap captures the planned direction for LiRAYS-SCADA. It is a planning artifact and may evolve as priorities or constraints change.
+
+## Roadmap Categories
+
+- **Now**: active delivery work or items targeted for the next release cycle.
+- **Next**: planned work for the following cycle.
+- **Later**: strategic initiatives not yet scheduled.
+
+## Roadmap Pages
+
+- [Product Vision](vision.md)
+- [Timeline](timeline.md)

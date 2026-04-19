@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Data and Persistence - LiRAYS-SCADA Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Data and Persistence";
+        var mkdocs_page_input_path = "developers/architecture/data-persistence.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> LiRAYS-SCADA Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Users</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../users/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Installation</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../users/installation/docker/">Docker</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../users/installation/linux/">Linux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../users/installation/macos/">macOS</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Configuration</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../users/configuration/settings_file/">Settings File</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Tutorials</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../users/tutorials/first_steps/">First Steps</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Integrators</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../integrators/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../integrators/sdk/">SDK and Protocol</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Developers</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">Overview</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Architecture</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../system-overview/">System Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../backend-runtime/">Backend Runtime</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../realtime-protocol/">Realtime Protocol</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../frontend-architecture/">Frontend Architecture</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Data and Persistence</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#data-root-layout">Data Root Layout</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#realtime-store-rt_data">Realtime Store (rt_data)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#session-store-sessions">Session Store (sessions)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#relational-store-staticdb">Relational Store (static.db)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#write-durability-model">Write Durability Model</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#metrics-files">Metrics Files</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration-resolution">Configuration Resolution</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#operational-implications">Operational Implications</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../auth-security/">Authentication and Security</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../clients-and-cli/">Clients and CLI</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../build-and-release/">Build and Release</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../environment/">Development Environment</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Contributing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../contributing/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../contributing/report_bug/">Report Bug</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../contributing/suggest_improvement/">Suggest Improvement</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../contributing/suggest_new_feature/">Suggest New Feature</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Roadmap</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../roadmap/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../roadmap/vision/">Product Vision</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../roadmap/timeline/">Timeline</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">LiRAYS-SCADA Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Developers</li>
+          <li class="breadcrumb-item">Architecture</li>
+      <li class="breadcrumb-item active">Data and Persistence</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/LiRAYSgj/LiRAYS-SCADA-docs/edit/master/docs/developers/architecture/data-persistence.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="data-and-persistence-architecture">Data and Persistence Architecture</h1>
+<h2 id="data-root-layout">Data Root Layout</h2>
+<p>Runtime data lives under configured <code>data_dir</code> (default <code>./data</code>):</p>
+<ul>
+<li><code>rt_data/</code>: realtime namespace + value storage (sled)</li>
+<li><code>sessions/</code>: session store (sled)</li>
+<li><code>static.db</code>: SQLite relational store</li>
+<li><code>metrics/</code>: optional realtime + historical metrics files</li>
+<li><code>certificates/</code>: auto-generated self-signed cert/key when TLS auto mode is enabled</li>
+</ul>
+<h2 id="realtime-store-rt_data">Realtime Store (<code>rt_data</code>)</h2>
+<p>Implemented by <code>VariableManager</code> using two sled trees:</p>
+<ul>
+<li><code>mainTree</code> (<code>items_tree</code>): namespace metadata</li>
+<li><code>valuesTree</code> (<code>values_tree</code>): persisted variable values</li>
+</ul>
+<p>Key conventions:</p>
+<ul>
+<li>Namespace node metadata key: <code>parent_path/\0name</code></li>
+<li>Variable value key: normalized variable path (<code>/Area/Tag</code>)</li>
+</ul>
+<p>In-memory <code>values_cache</code> is preloaded at startup from metadata + persisted values.</p>
+<h2 id="session-store-sessions">Session Store (<code>sessions</code>)</h2>
+<p><code>SessionManager</code> uses a sled tree with two key families:</p>
+<ul>
+<li>session payload: <code>user_session:{session_id}</code></li>
+<li>user index: <code>user_session_access:{username}:{session_id}</code></li>
+</ul>
+<p>This supports:</p>
+<ul>
+<li>quick session lookup</li>
+<li>full user session revocation</li>
+<li>periodic purge of expired refresh tokens</li>
+</ul>
+<h2 id="relational-store-staticdb">Relational Store (<code>static.db</code>)</h2>
+<p>SQLite tables initialized on startup:</p>
+<ul>
+<li><code>users</code>: username, password hash, role</li>
+<li><code>patokens</code>: token metadata + hash + expiry</li>
+<li><code>views</code>: canvas documents + entry-point marker</li>
+</ul>
+<p>No external migration framework is currently used; table creation is managed in code with <code>CREATE TABLE IF NOT EXISTS</code>.</p>
+<h2 id="write-durability-model">Write Durability Model</h2>
+<p>Realtime <code>Set</code> operations are write-back:</p>
+<ol>
+<li>Accepted values update in-memory cache immediately.</li>
+<li>Dirty map records latest value per variable.</li>
+<li>Flush loop persists coalesced values to sled on interval.</li>
+<li>Graceful shutdown performs explicit final flush.</li>
+</ol>
+<p>This improves throughput while preserving eventual durability.</p>
+<h2 id="metrics-files">Metrics Files</h2>
+<p>When enabled:</p>
+<ul>
+<li><code>metrics_rt.txt</code>: rolling human-readable snapshot (rewritten every 5s)</li>
+<li><code>metrics_hist.csv</code>: append-only historical metrics timeline</li>
+</ul>
+<p>Metrics include command counts, average latencies, and event fan-out counters.</p>
+<h2 id="configuration-resolution">Configuration Resolution</h2>
+<p>Effective config precedence:</p>
+<ol>
+<li>Environment variable</li>
+<li>YAML setting file</li>
+<li>Built-in default</li>
+</ol>
+<p><code>Settings</code> loader resolves each setting using <code>SettingSpec</code> and tracks source (<code>env</code>, <code>file</code>, <code>default</code>).</p>
+<h2 id="operational-implications">Operational Implications</h2>
+<ul>
+<li>Back up both <code>static.db</code> and sled dirs for full recoverability.</li>
+<li>Treat <code>settings.yaml</code> as persistent operator-managed config; packaging seeds defaults but does not overwrite existing user config.</li>
+<li>For auth-enabled deployments, persist and protect <code>auth.secret</code> consistently across restarts.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../frontend-architecture/" class="btn btn-neutral float-left" title="Frontend Architecture"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../auth-security/" class="btn btn-neutral float-right" title="Authentication and Security">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/LiRAYSgj/LiRAYS-SCADA-docs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../frontend-architecture/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../auth-security/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

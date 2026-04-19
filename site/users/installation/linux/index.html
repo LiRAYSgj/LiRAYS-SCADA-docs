@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Linux - LiRAYS-SCADA Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Linux";
+        var mkdocs_page_input_path = "users/installation/linux.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> LiRAYS-SCADA Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Users</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">Overview</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Installation</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../docker/">Docker</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Linux</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#before-you-start">Before You Start</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#download-with-curl-optional">Download with curl (Optional)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#install">Install</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#debian-and-ubuntu">Debian and Ubuntu</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#rhel-rocky-fedora">RHEL, Rocky, Fedora</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#verify-service">Verify Service</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#uninstall">Uninstall</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#debian-and-ubuntu_1">Debian and Ubuntu</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#rhel-rocky-fedora_1">RHEL, Rocky, Fedora</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../macos/">macOS</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Configuration</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../configuration/settings_file/">Settings File</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Tutorials</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../tutorials/first_steps/">First Steps</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Integrators</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../integrators/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../integrators/sdk/">SDK and Protocol</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Developers</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../developers/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/system-overview/">System Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/backend-runtime/">Backend Runtime</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/realtime-protocol/">Realtime Protocol</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/frontend-architecture/">Frontend Architecture</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/data-persistence/">Data and Persistence</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/auth-security/">Authentication and Security</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/clients-and-cli/">Clients and CLI</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/build-and-release/">Build and Release</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../developers/environment/">Development Environment</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Contributing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/contributing/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/contributing/report_bug/">Report Bug</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/contributing/suggest_improvement/">Suggest Improvement</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/contributing/suggest_new_feature/">Suggest New Feature</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Roadmap</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../roadmap/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../roadmap/vision/">Product Vision</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../roadmap/timeline/">Timeline</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">LiRAYS-SCADA Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Users</li>
+          <li class="breadcrumb-item">Installation</li>
+      <li class="breadcrumb-item active">Linux</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/LiRAYSgj/LiRAYS-SCADA-docs/edit/master/docs/users/installation/linux.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="linux-installation">Linux Installation</h1>
+<p>This guide covers package-based installation on Linux.</p>
+<h2 id="before-you-start">Before You Start</h2>
+<p>Download URLs in this page use placeholders. Replace <code>&lt;version&gt;</code> and architecture values with real release artifacts.</p>
+<p>Available package patterns:</p>
+<ul>
+<li><code>lirays-scada_&lt;version&gt;_amd64.deb</code></li>
+<li><code>lirays-scada_&lt;version&gt;_arm64.deb</code></li>
+<li><code>lirays-scada-&lt;version&gt;-1.x86_64.rpm</code></li>
+<li><code>lirays-scada-&lt;version&gt;-1.aarch64.rpm</code></li>
+</ul>
+<p>Example links:</p>
+<ul>
+<li><a href="https://downloads.example.com/lirays-scada/linux/lirays-scada_&lt;version&gt;_amd64.deb">DEB amd64</a></li>
+<li><a href="https://downloads.example.com/lirays-scada/linux/lirays-scada_&lt;version&gt;_arm64.deb">DEB arm64</a></li>
+<li><a href="https://downloads.example.com/lirays-scada/linux/lirays-scada-&lt;version&gt;-1.x86_64.rpm">RPM x86_64</a></li>
+<li><a href="https://downloads.example.com/lirays-scada/linux/lirays-scada-&lt;version&gt;-1.aarch64.rpm">RPM aarch64</a></li>
+</ul>
+<h2 id="download-with-curl-optional">Download with <code>curl</code> (Optional)</h2>
+<pre><code class="language-sh">curl -L -o lirays-scada_&lt;version&gt;_amd64.deb &quot;https://downloads.example.com/lirays-scada/linux/lirays-scada_&lt;version&gt;_amd64.deb&quot;
+</code></pre>
+<pre><code class="language-sh">curl -L -o lirays-scada-&lt;version&gt;-1.x86_64.rpm &quot;https://downloads.example.com/lirays-scada/linux/lirays-scada-&lt;version&gt;-1.x86_64.rpm&quot;
+</code></pre>
+<h2 id="install">Install</h2>
+<h3 id="debian-and-ubuntu">Debian and Ubuntu</h3>
+<pre><code class="language-sh">sudo apt install ./lirays-scada_&lt;version&gt;_&lt;architecture&gt;.deb
+</code></pre>
+<h3 id="rhel-rocky-fedora">RHEL, Rocky, Fedora</h3>
+<pre><code class="language-sh">sudo dnf install ./lirays-scada-&lt;version&gt;-1.&lt;architecture&gt;.rpm
+</code></pre>
+<p>The installer registers the <code>lirays-scada.service</code> systemd service.</p>
+<h2 id="verify-service">Verify Service</h2>
+<pre><code class="language-sh">systemctl status lirays-scada
+journalctl -u lirays-scada -f
+</code></pre>
+<p>When the service is running, open:</p>
+<ul>
+<li><code>http://127.0.0.1:8245</code></li>
+</ul>
+<p>Important paths:</p>
+<ul>
+<li>Config: <code>/etc/lirays-scada/settings.yaml</code></li>
+<li>Data: <code>/var/lib/lirays-scada/data</code></li>
+</ul>
+<h2 id="uninstall">Uninstall</h2>
+<h3 id="debian-and-ubuntu_1">Debian and Ubuntu</h3>
+<pre><code class="language-sh">sudo apt remove lirays-scada
+</code></pre>
+<p>Optional full cleanup:</p>
+<pre><code class="language-sh">sudo apt purge lirays-scada
+sudo rm -rf /etc/lirays-scada /var/lib/lirays-scada
+</code></pre>
+<h3 id="rhel-rocky-fedora_1">RHEL, Rocky, Fedora</h3>
+<pre><code class="language-sh">sudo dnf remove lirays-scada
+</code></pre>
+<p>Optional full cleanup:</p>
+<pre><code class="language-sh">sudo rm -rf /etc/lirays-scada /var/lib/lirays-scada
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../docker/" class="btn btn-neutral float-left" title="Docker"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../macos/" class="btn btn-neutral float-right" title="macOS">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/LiRAYSgj/LiRAYS-SCADA-docs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../docker/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../macos/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

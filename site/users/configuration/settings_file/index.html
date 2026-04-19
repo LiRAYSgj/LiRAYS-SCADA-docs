@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Settings File - LiRAYS-SCADA Docs</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Settings File";
+        var mkdocs_page_input_path = "users/configuration/settings_file.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> LiRAYS-SCADA Docs
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Users</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Installation</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/docker/">Docker</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/linux/">Linux</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../installation/macos/">macOS</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" >Configuration</a>
+    <ul class="current">
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Settings File</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#configuration-file-location">Configuration File Location</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-configuration-values-are-resolved">How Configuration Values Are Resolved</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#environment-variable-notes">Environment Variable Notes</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#modify-configuration">Modify Configuration</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#option-1-edit-settingsyaml-directly">Option 1: Edit settings.yaml directly</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#option-2-use-the-lirays-helper">Option 2: Use the lirays helper</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#restart-service-after-changes">Restart Service After Changes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#full-parameter-reference">Full Parameter Reference</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#server">server</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#paths">paths</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#tls">tls</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#metrics">metrics</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#persistence">persistence</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#logger">logger</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#auth">auth</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example-baseline-configuration">Example Baseline Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#production-recommended-configuration">Production-Recommended Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#validate-configuration-health">Validate Configuration Health</a>
+    </li>
+    </ul>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Tutorials</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../tutorials/first_steps/">First Steps</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Integrators</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../integrators/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../integrators/sdk/">SDK and Protocol</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Developers</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../developers/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Architecture</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/system-overview/">System Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/backend-runtime/">Backend Runtime</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/realtime-protocol/">Realtime Protocol</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/frontend-architecture/">Frontend Architecture</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/data-persistence/">Data and Persistence</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/auth-security/">Authentication and Security</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/clients-and-cli/">Clients and CLI</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/architecture/build-and-release/">Build and Release</a>
+                </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../developers/environment/">Development Environment</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" >Contributing</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/contributing/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/contributing/report_bug/">Report Bug</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/contributing/suggest_improvement/">Suggest Improvement</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../../developers/contributing/suggest_new_feature/">Suggest New Feature</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Roadmap</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../roadmap/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../roadmap/vision/">Product Vision</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../roadmap/timeline/">Timeline</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">LiRAYS-SCADA Docs</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Users</li>
+          <li class="breadcrumb-item">Configuration</li>
+      <li class="breadcrumb-item active">Settings File</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/LiRAYSgj/LiRAYS-SCADA-docs/edit/master/docs/users/configuration/settings_file.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="configuration">Configuration</h1>
+<p>This guide explains how to configure LiRAYS-SCADA using <code>settings.yaml</code>, environment variables, and service restart workflows.</p>
+<h2 id="configuration-file-location">Configuration File Location</h2>
+<p>Packaged installations use a platform-specific <code>settings.yaml</code> file:</p>
+<ul>
+<li>Linux (DEB/RPM): <code>/etc/lirays-scada/settings.yaml</code></li>
+<li>macOS package: <code>/Library/Application Support/LiRAYSScada/settings.yaml</code></li>
+</ul>
+<p>On first install, the package seeds <code>settings.yaml</code> from <code>settings.default.yaml</code> only if <code>settings.yaml</code> does not exist. Package upgrades do not overwrite <code>settings.yaml</code>.</p>
+<p>Default template files shipped by packages:</p>
+<ul>
+<li>Linux (DEB/RPM): <code>/etc/lirays-scada/settings.default.yaml</code></li>
+<li>macOS package: <code>/Library/Application Support/LiRAYSScada/settings.default.yaml</code></li>
+</ul>
+<p>For Docker deployments, you can either:</p>
+<ul>
+<li>Pass environment variables directly to the container.</li>
+<li>Mount a settings file and run the server with <code>--config /path/to/settings.yaml</code>.</li>
+</ul>
+<h2 id="how-configuration-values-are-resolved">How Configuration Values Are Resolved</h2>
+<p>LiRAYS-SCADA resolves each setting in this order:</p>
+<ol>
+<li>Environment variable override.</li>
+<li>Value from <code>settings.yaml</code>.</li>
+<li>Built-in fallback default.</li>
+</ol>
+<h3 id="environment-variable-notes">Environment Variable Notes</h3>
+<ul>
+<li>Boolean environment variables accept: <code>true/false</code>, <code>1/0</code>, <code>yes/no</code>, <code>on/off</code>.</li>
+<li>If an environment variable value cannot be parsed, startup fails with a configuration error.</li>
+<li>If a value exists in <code>settings.yaml</code> but cannot be parsed to the expected type, startup fails with a configuration error.</li>
+</ul>
+<h2 id="modify-configuration">Modify Configuration</h2>
+<p>You can modify configuration in two ways.</p>
+<h3 id="option-1-edit-settingsyaml-directly">Option 1: Edit <code>settings.yaml</code> directly</h3>
+<p>Linux:</p>
+<pre><code class="language-sh">sudo nano /etc/lirays-scada/settings.yaml
+</code></pre>
+<p>macOS:</p>
+<pre><code class="language-sh">sudo nano &quot;/Library/Application Support/LiRAYSScada/settings.yaml&quot;
+</code></pre>
+<h3 id="option-2-use-the-lirays-helper">Option 2: Use the <code>lirays</code> helper</h3>
+<p>The CLI can update one parameter at a time:</p>
+<pre><code class="language-sh">sudo lirays settings-update server.bind_host 0.0.0.0
+sudo lirays settings-update auth.enabled true
+sudo lirays settings-update auth.secret &quot;replace_with_long_random_secret&quot;
+</code></pre>
+<p>Inspect effective values (and whether each value came from env/file/default):</p>
+<pre><code class="language-sh">sudo lirays settings
+</code></pre>
+<h2 id="restart-service-after-changes">Restart Service After Changes</h2>
+<p>Configuration changes become effective after service restart.</p>
+<p>Linux (systemd):</p>
+<pre><code class="language-sh">sudo systemctl restart lirays-scada
+sudo systemctl status lirays-scada
+</code></pre>
+<p>macOS (launchd):</p>
+<pre><code class="language-sh">sudo launchctl kickstart -k system/com.lirays.liraysscada
+launchctl print system/com.lirays.liraysscada
+</code></pre>
+<p>Cross-platform helper (Linux and macOS):</p>
+<pre><code class="language-sh">sudo lirays restart-service
+</code></pre>
+<p>Docker:</p>
+<pre><code class="language-sh"># If using docker run
+docker restart lirays-scada
+
+# If using compose
+docker compose up -d
+</code></pre>
+<h2 id="full-parameter-reference">Full Parameter Reference</h2>
+<h3 id="server"><code>server</code></h3>
+<ul>
+<li><code>bind_host</code></li>
+<li>Type: string</li>
+<li>Default in packaged templates: <code>127.0.0.1</code></li>
+<li>Env var: <code>BIND_HOST</code></li>
+<li>Description: Host/interface used by HTTP and WebSocket.</li>
+<li>
+<p>Common values:</p>
+<ul>
+<li><code>127.0.0.1</code>: local-only access.</li>
+<li><code>0.0.0.0</code>: bind all interfaces.</li>
+</ul>
+</li>
+<li>
+<p><code>bind_port</code></p>
+</li>
+<li>Type: integer (<code>u16</code>)</li>
+<li>Default: <code>8245</code></li>
+<li>Env var: <code>BIND_PORT</code></li>
+<li>Description: Port used by HTTP and WebSocket.</li>
+</ul>
+<h3 id="paths"><code>paths</code></h3>
+<ul>
+<li><code>data_dir</code></li>
+<li>Type: path or <code>null</code></li>
+<li>Env var: <code>DATA_DIR</code></li>
+<li>Default in packaged templates:<ul>
+<li>Linux: <code>/var/lib/lirays-scada/data</code></li>
+<li>macOS: <code>/Library/Application Support/LiRAYSScada/data</code></li>
+</ul>
+</li>
+<li>If unset/missing in non-packaged runs, fallback is <code>{current_working_directory}/data</code>.</li>
+<li>Description: Root directory for runtime data, including DB files, sessions, metrics, and TLS auto-generated certificates.</li>
+</ul>
+<h3 id="tls"><code>tls</code></h3>
+<ul>
+<li><code>enabled</code></li>
+<li>Type: boolean</li>
+<li>Default: <code>false</code></li>
+<li>Env var: <code>TLS_ENABLE</code></li>
+<li>
+<p>Description: Enables TLS for both HTTP and WebSocket endpoints.</p>
+</li>
+<li>
+<p><code>auto</code></p>
+</li>
+<li>Type: boolean</li>
+<li>Default: <code>true</code></li>
+<li>Env var: <code>TLS_AUTO</code></li>
+<li>
+<p>Description: If <code>tls.enabled=true</code> and cert/key are not provided, auto-generates a self-signed certificate pair under <code>${data_dir}/certificates</code>.</p>
+</li>
+<li>
+<p><code>cert_path</code></p>
+</li>
+<li>Type: path or <code>null</code></li>
+<li>Default: <code>null</code></li>
+<li>Env var: <code>TLS_CERT_PATH</code></li>
+<li>
+<p>Description: PEM certificate path when using manual TLS certificate configuration.</p>
+</li>
+<li>
+<p><code>key_path</code></p>
+</li>
+<li>Type: path or <code>null</code></li>
+<li>Default: <code>null</code></li>
+<li>Env var: <code>TLS_KEY_PATH</code></li>
+<li>Description: PEM private key path when using manual TLS certificate configuration.</li>
+</ul>
+<p>TLS validation rules:</p>
+<ul>
+<li>If <code>tls.enabled=false</code>, TLS cert settings are ignored.</li>
+<li>If <code>tls.enabled=true</code> and <code>cert_path</code> + <code>key_path</code> are both set, those files are used.</li>
+<li>If <code>tls.enabled=true</code>, both cert/key are missing, and <code>tls.auto=true</code>, a self-signed pair is generated.</li>
+<li>If <code>tls.enabled=true</code> and only one of cert/key is set, startup fails.</li>
+<li>If <code>tls.enabled=true</code>, both cert/key are missing, and <code>tls.auto=false</code>, startup fails.</li>
+</ul>
+<h3 id="metrics"><code>metrics</code></h3>
+<ul>
+<li><code>real_time</code></li>
+<li>Type: boolean</li>
+<li>Default: <code>false</code></li>
+<li>Env var: <code>METRICS_REAL_TIME</code></li>
+<li>
+<p>Description: Writes rolling snapshot metrics to <code>${data_dir}/metrics/metrics_rt.txt</code>.</p>
+</li>
+<li>
+<p><code>historic</code></p>
+</li>
+<li>Type: boolean</li>
+<li>Default: <code>false</code></li>
+<li>Env var: <code>METRICS_HISTORIC</code></li>
+<li>Description: Appends historical metrics to <code>${data_dir}/metrics/metrics_hist.csv</code>.</li>
+</ul>
+<h3 id="persistence"><code>persistence</code></h3>
+<ul>
+<li><code>flush_ms</code></li>
+<li>Type: integer (<code>u64</code>, milliseconds)</li>
+<li>Default: <code>15000</code></li>
+<li>Env var: <code>PERSIST_FLUSH_MS</code></li>
+<li>Description: Flush interval for dirty values.</li>
+<li>Runtime rule: minimum effective value is <code>5000</code>; lower values are automatically clamped to <code>5000</code>.</li>
+</ul>
+<h3 id="logger"><code>logger</code></h3>
+<ul>
+<li><code>level</code></li>
+<li>Type: string enum</li>
+<li>Default: <code>info</code></li>
+<li>Env var: <code>LOGGER_LEVEL</code></li>
+<li>Accepted values: <code>off</code>, <code>error</code>, <code>warn</code> (or <code>warning</code>), <code>info</code>, <code>debug</code>, <code>trace</code>.</li>
+<li>Description: Global application log verbosity.</li>
+</ul>
+<h3 id="auth"><code>auth</code></h3>
+<ul>
+<li><code>enabled</code></li>
+<li>Type: boolean</li>
+<li>Default: <code>false</code></li>
+<li>Env var: <code>AUTH_ENABLED</code></li>
+<li>
+<p>Description: Enables session-protected UI/API.</p>
+</li>
+<li>
+<p><code>secret</code></p>
+</li>
+<li>Type: string or <code>null</code></li>
+<li>Default: <code>null</code></li>
+<li>Env var: <code>AUTH_SECRET</code></li>
+<li>Description: HMAC secret for session signing.</li>
+<li>
+<p>Required when: <code>auth.enabled=true</code>.</p>
+</li>
+<li>
+<p><code>access_ttl</code></p>
+</li>
+<li>Type: integer (<code>u64</code>, seconds)</li>
+<li>Default: <code>3600</code></li>
+<li>Env var: <code>ACCESS_TTL</code></li>
+<li>
+<p>Description: Access token/session TTL.</p>
+</li>
+<li>
+<p><code>refresh_ttl</code></p>
+</li>
+<li>Type: integer (<code>u64</code>, seconds)</li>
+<li>Default: <code>86400</code></li>
+<li>Env var: <code>REFRESH_TTL</code></li>
+<li>Description: Refresh token/session TTL.</li>
+</ul>
+<p>Authentication validation rules:</p>
+<ul>
+<li>If <code>auth.enabled=true</code> and <code>auth.secret</code> is missing (and <code>AUTH_SECRET</code> is not set), startup fails.</li>
+</ul>
+<h2 id="example-baseline-configuration">Example Baseline Configuration</h2>
+<p>Use the path that matches your platform for <code>paths.data_dir</code>:</p>
+<ul>
+<li>Linux: <code>/var/lib/lirays-scada/data</code></li>
+<li>macOS: <code>/Library/Application Support/LiRAYSScada/data</code></li>
+</ul>
+<pre><code class="language-yaml">server:
+  bind_host: 127.0.0.1
+  bind_port: 8245
+
+paths:
+  data_dir: /var/lib/lirays-scada/data
+
+tls:
+  enabled: false
+  auto: true
+  cert_path: null
+  key_path: null
+
+metrics:
+  real_time: false
+  historic: false
+
+persistence:
+  flush_ms: 15000
+
+logger:
+  level: info
+
+auth:
+  enabled: false
+  secret: null
+  access_ttl: 3600
+  refresh_ttl: 86400
+</code></pre>
+<h2 id="production-recommended-configuration">Production-Recommended Configuration</h2>
+<p>For production, use explicit authentication, explicit TLS certificates, and conservative logging.</p>
+<pre><code class="language-yaml">server:
+  bind_host: 0.0.0.0
+  bind_port: 8245
+
+paths:
+  data_dir: /var/lib/lirays-scada/data
+
+tls:
+  enabled: true
+  auto: false
+  cert_path: /etc/lirays-scada/tls/server.crt
+  key_path: /etc/lirays-scada/tls/server.key
+
+metrics:
+  real_time: true
+  historic: true
+
+persistence:
+  flush_ms: 10000
+
+logger:
+  level: info
+
+auth:
+  enabled: true
+  secret: &quot;replace_with_long_random_secret&quot;
+  access_ttl: 3600
+  refresh_ttl: 86400
+</code></pre>
+<p>Production hardening guidance:</p>
+<ul>
+<li>Use a long, random <code>auth.secret</code> (at least 32 bytes of entropy).</li>
+<li>Restrict permissions on <code>settings.yaml</code>, TLS key files, and the data directory.</li>
+<li>Prefer fixed certificate files from your PKI or ACME workflow (<code>tls.auto=false</code>).</li>
+<li>Keep <code>logger.level=info</code> for normal operations; switch to <code>debug</code> only for incident diagnostics.</li>
+<li>Backup <code>${data_dir}</code> regularly.</li>
+</ul>
+<p>Optional secret generation example:</p>
+<pre><code class="language-sh">openssl rand -base64 48
+</code></pre>
+<h2 id="validate-configuration-health">Validate Configuration Health</h2>
+<p>After any configuration update:</p>
+<ol>
+<li>Restart the service.</li>
+<li>Check service status and logs.</li>
+<li>Open the UI endpoint (<code>http://127.0.0.1:8245</code> or <code>https://...</code> if TLS enabled).</li>
+<li>If auth is enabled and no admin exists yet, complete initial setup at <code>/auth/setup</code>.</li>
+</ol>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../installation/macos/" class="btn btn-neutral float-left" title="macOS"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../tutorials/first_steps/" class="btn btn-neutral float-right" title="First Steps">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/LiRAYSgj/LiRAYS-SCADA-docs" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../../installation/macos/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../tutorials/first_steps/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+# SDK and Protocol Integration
+
+This page summarizes the supported integration options for LiRAYS-SCADA.
+
+## Official SDKs
+
+- [Rust SDK (crates.io)](https://crates.io/crates/lirays)
+- [Python SDK (PyPI)](https://pypi.org/project/lirays)
+
+## Protocol Source of Truth
+
+For custom clients or protocol-level integrations, use the protobuf contract in the next repository:
+
+- [Protocol schema](https://github.com/LiRAYSgj/LiRAYS-SCADA-proto)
+
+## Practical Guidance
+
+- Prefer SDKs for production integrations when possible.
+- Use Personal Access Tokens (PAT) for service-to-service authentication.
+- Keep SDK and server versions aligned when protocol changes are introduced.
+- If you plan a new integration capability, coordinate through the [Developers Guide](../developers/index.md) and [Product Roadmap](../roadmap/index.md).
