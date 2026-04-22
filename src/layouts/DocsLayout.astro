@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { Moon, Sun } from '@lucide/astro';
+import { List, Moon, PanelLeftClose, PanelLeftOpen, Sun } from '@lucide/astro';
 import { nav } from '../data/nav.js';
 
 const { title = 'LiRAYS SCADA Docs', currentPath = '/' } = Astro.props;
@@ -26,10 +26,6 @@ const isActive = (href) => {
   <body>
     <div class="app-shell">
       <aside class="sidebar">
-        <a href="/" class="brand" aria-label="LiRAYS SCADA">
-          <img src="/logo.svg" alt="LiRAYS" class="brand-logo" draggable="false" />
-          <span class="brand-suffix">SCADA</span>
-        </a>
         <nav>
           {
             nav.map((item) =>
@@ -59,30 +55,95 @@ const isActive = (href) => {
       </aside>
       <main class="content">
         <header class="content-header">
-          <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="false" data-theme="light">
+          <div class="content-header-controls">
+            <button
+              type="button"
+              id="nav-toggle"
+              class="nav-toggle icon-button"
+              aria-label="Hide index"
+              title="Hide index"
+              aria-expanded="true"
+              data-nav-open="true"
+            >
+              <span class="sr-only">Toggle index</span>
+              <span class="icon-stack" aria-hidden="true">
+                <PanelLeftClose class="icon-state icon-state-open" size={16} strokeWidth={2.2} />
+                <PanelLeftOpen class="icon-state icon-state-closed" size={16} strokeWidth={2.2} />
+              </span>
+            </button>
+            <button
+              type="button"
+              id="toc-toggle"
+              class="toc-toggle icon-button"
+              aria-label="Toggle On This Page"
+              title="Toggle On This Page"
+              aria-expanded="false"
+            >
+              <span class="sr-only">Toggle On This Page</span>
+              <List size={16} strokeWidth={2.2} aria-hidden="true" />
+            </button>
+          </div>
+          <a href="/" class="header-brand" aria-label="LiRAYS SCADA">
+            <img src="/logo.svg" alt="LiRAYS" class="header-brand-logo" draggable="false" />
+            <span class="header-brand-suffix">SCADA</span>
+          </a>
+          <button
+            type="button"
+            id="theme-toggle"
+            class="theme-toggle icon-button"
+            aria-label="Switch to dark mode"
+            title="Switch to dark mode"
+            aria-pressed="false"
+            data-theme="light"
+          >
+            <span class="sr-only">Toggle theme</span>
             <span class="theme-toggle-icon" aria-hidden="true">
               <Moon class="theme-icon theme-icon-moon" size={16} strokeWidth={2.2} />
               <Sun class="theme-icon theme-icon-sun" size={16} strokeWidth={2.2} />
             </span>
-            <span id="theme-toggle-label">Dark mode</span>
           </button>
         </header>
-        <article class="doc-content">
-          <slot />
-        </article>
+        <div class="content-body">
+          <article class="doc-content">
+            <slot />
+          </article>
+          <aside id="toc-panel" class="toc-panel" aria-label="Table of contents">
+            <div class="toc-card">
+              <h2 class="toc-title">On This Page</h2>
+              <nav id="toc-nav" class="toc-nav">
+                <p class="toc-empty">No sections on this page.</p>
+              </nav>
+            </div>
+          </aside>
+          <button type="button" id="toc-backdrop" class="toc-backdrop" aria-label="Close table of contents"></button>
+        </div>
       </main>
     </div>
+    <button type="button" id="nav-backdrop" class="nav-backdrop" aria-label="Close index"></button>
     <script>
       const root = document.documentElement;
       const btn = document.getElementById('theme-toggle');
-      const label = document.getElementById('theme-toggle-label');
+      const body = document.body;
+      const navToggle = document.getElementById('nav-toggle');
+      const navBackdrop = document.getElementById('nav-backdrop');
+      const sidebarLinks = document.querySelectorAll('.sidebar nav a');
+      const tocToggle = document.getElementById('toc-toggle');
+      const tocBackdrop = document.getElementById('toc-backdrop');
+      const tocNav = document.getElementById('toc-nav');
+      const docContent = document.querySelector('.doc-content');
+      const DESKTOP_BREAKPOINT = 1200;
+      const SIDEBAR_DESKTOP_BREAKPOINT = 961;
 
       const applyTheme = (theme) => {
         const isDark = theme === 'dark';
         root.setAttribute('data-theme', theme);
         btn?.setAttribute('aria-pressed', String(isDark));
         btn?.setAttribute('data-theme', theme);
-        if (label) label.textContent = isDark ? 'Light mode' : 'Dark mode';
+        if (btn) {
+          const nextLabel = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+          btn.setAttribute('aria-label', nextLabel);
+          btn.setAttribute('title', nextLabel);
+        }
       };
 
       const saved = localStorage.getItem('theme');
@@ -94,6 +155,187 @@ const isActive = (href) => {
         const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         applyTheme(next);
         localStorage.setItem('theme', next);
+      });
+
+      const navDesktop = window.matchMedia(`(min-width: ${SIDEBAR_DESKTOP_BREAKPOINT}px)`);
+      const isNavDesktop = () => navDesktop.matches;
+      const savedNavOpen = localStorage.getItem('nav-open');
+      let navOpen = savedNavOpen === null ? true : savedNavOpen === 'true';
+
+      const setNavOpen = (value, persist = true) => {
+        navOpen = value;
+        body.dataset.navOpen = String(value);
+        navToggle?.setAttribute('aria-expanded', String(value));
+        navToggle?.setAttribute('data-nav-open', String(value));
+        const navLabel = value ? 'Hide index' : 'Show index';
+        navToggle?.setAttribute('aria-label', navLabel);
+        navToggle?.setAttribute('title', navLabel);
+        if (isNavDesktop()) {
+          if (persist) localStorage.setItem('nav-open', String(value));
+        }
+      };
+
+      const syncNavState = () => {
+        if (isNavDesktop()) {
+          const desktopSaved = localStorage.getItem('nav-open');
+          setNavOpen(desktopSaved === null ? true : desktopSaved === 'true', false);
+        } else {
+          setNavOpen(false, false);
+        }
+      };
+
+      syncNavState();
+      navDesktop.addEventListener('change', syncNavState);
+
+      navToggle?.addEventListener('click', () => {
+        setNavOpen(!navOpen);
+      });
+
+      navBackdrop?.addEventListener('click', () => {
+        if (!isNavDesktop()) setNavOpen(false, false);
+      });
+
+      sidebarLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          if (!isNavDesktop()) setNavOpen(false, false);
+        });
+      });
+
+      const mediaDesktop = window.matchMedia(`(min-width: ${DESKTOP_BREAKPOINT}px)`);
+      const hasDesktopToc = () => mediaDesktop.matches;
+      const savedVisible = localStorage.getItem('toc-visible');
+      let tocVisible = savedVisible === null ? true : savedVisible === 'true';
+      let tocOpen = false;
+
+      const setTocVisible = (value, persist = true) => {
+        tocVisible = value;
+        if (persist) localStorage.setItem('toc-visible', String(value));
+        body.dataset.tocVisible = String(value);
+        const toggleLabel = value ? 'Hide On This Page' : 'Show On This Page';
+        tocToggle?.setAttribute('aria-label', toggleLabel);
+        tocToggle?.setAttribute('title', toggleLabel);
+        tocToggle?.setAttribute('aria-expanded', String(value));
+        if (value) {
+          tocOpen = false;
+          body.dataset.tocOpen = 'false';
+        }
+      };
+
+      const setTocOpen = (value) => {
+        tocOpen = value;
+        body.dataset.tocOpen = String(value);
+        tocToggle?.setAttribute('aria-expanded', String(value));
+        const toggleLabel = value ? 'Hide On This Page' : 'Show On This Page';
+        tocToggle?.setAttribute('aria-label', toggleLabel);
+        tocToggle?.setAttribute('title', toggleLabel);
+      };
+
+      const slugify = (text) =>
+        text
+          .toLowerCase()
+          .trim()
+          .replace(/['"]/g, '')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+
+      const ensureHeadingId = (heading, usedIds) => {
+        const existing = heading.id?.trim();
+        if (existing) {
+          usedIds.add(existing);
+          return existing;
+        }
+        const base = slugify(heading.textContent || 'section') || 'section';
+        let nextId = base;
+        let i = 2;
+        while (usedIds.has(nextId)) {
+          nextId = `${base}-${i}`;
+          i += 1;
+        }
+        heading.id = nextId;
+        usedIds.add(nextId);
+        return nextId;
+      };
+
+      const headings = docContent ? Array.from(docContent.querySelectorAll('h2, h3')) : [];
+      const usedIds = new Set();
+      const items = headings.map((heading) => {
+        const id = ensureHeadingId(heading, usedIds);
+        return {
+          id,
+          text: (heading.textContent || '').trim(),
+          depth: heading.tagName.toLowerCase(),
+          node: heading,
+        };
+      });
+
+      if (!tocNav || items.length === 0) {
+        tocToggle?.setAttribute('disabled', 'true');
+      } else {
+        tocNav.innerHTML = '';
+        const list = document.createElement('ul');
+        list.className = 'toc-list';
+
+        const linksById = new Map();
+        for (const item of items) {
+          const li = document.createElement('li');
+          li.className = `toc-item toc-item-${item.depth}`;
+          const a = document.createElement('a');
+          a.href = `#${item.id}`;
+          a.textContent = item.text;
+          a.className = 'toc-link';
+          li.appendChild(a);
+          list.appendChild(li);
+          linksById.set(item.id, a);
+        }
+        tocNav.appendChild(list);
+
+        const updateActive = () => {
+          let activeId = items[0]?.id;
+          for (const item of items) {
+            if (item.node.getBoundingClientRect().top <= 132) {
+              activeId = item.id;
+            }
+          }
+          linksById.forEach((link, id) => {
+            link.classList.toggle('active', id === activeId);
+          });
+        };
+        updateActive();
+        window.addEventListener('scroll', updateActive, { passive: true });
+
+        tocNav.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', () => {
+            if (!hasDesktopToc() || !tocVisible) {
+              setTocOpen(false);
+            }
+          });
+        });
+      }
+
+      const syncTocState = () => {
+        if (!hasDesktopToc()) {
+          setTocVisible(false, false);
+        } else {          
+          const desktopSaved = localStorage.getItem('toc-visible');
+          setTocVisible(desktopSaved === null ? true : desktopSaved === 'true', false);
+        }
+        setTocOpen(false);
+      };
+
+      setTocVisible(tocVisible);
+      syncTocState();
+      mediaDesktop.addEventListener('change', syncTocState);
+
+      tocToggle?.addEventListener('click', () => {
+        if (hasDesktopToc()) {
+          setTocVisible(!tocVisible);
+          return;
+        }
+        setTocOpen(!tocOpen);
+      });
+
+      tocBackdrop?.addEventListener('click', () => {
+        setTocOpen(false);
       });
     </script>
   </body>
