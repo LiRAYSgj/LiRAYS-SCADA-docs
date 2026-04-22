@@ -1,0 +1,100 @@
+---
+import '../styles/global.css';
+import { Moon, Sun } from '@lucide/astro';
+import { nav } from '../data/nav.js';
+
+const { title = 'LiRAYS SCADA Docs', currentPath = '/' } = Astro.props;
+const isActive = (href) => {
+  if (href === '/') return currentPath === '/';
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+};
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Documentation for installation, operations, integrations, and development" />
+    <meta name="theme-color" content="#0f1118" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a href="/" class="brand" aria-label="LiRAYS SCADA">
+          <img src="/logo.svg" alt="LiRAYS" class="brand-logo" draggable="false" />
+          <span class="brand-suffix">SCADA</span>
+        </a>
+        <nav>
+          {
+            nav.map((item) =>
+              item.children ? (
+                <section class="nav-group">
+                  <p class="nav-group-title">{item.title}</p>
+                  <ul>
+                    {item.children.map((child) => (
+                      <li>
+                        <a href={child.href} class={isActive(child.href) ? 'active' : ''}>{child.title}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ) : (
+                <section class="nav-group">
+                  <ul>
+                    <li>
+                      <a href={item.href} class={isActive(item.href) ? 'active' : ''}>{item.title}</a>
+                    </li>
+                  </ul>
+                </section>
+              ),
+            )
+          }
+        </nav>
+      </aside>
+      <main class="content">
+        <header class="content-header">
+          <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" aria-pressed="false" data-theme="light">
+            <span class="theme-toggle-icon" aria-hidden="true">
+              <Moon class="theme-icon theme-icon-moon" size={16} strokeWidth={2.2} />
+              <Sun class="theme-icon theme-icon-sun" size={16} strokeWidth={2.2} />
+            </span>
+            <span id="theme-toggle-label">Dark mode</span>
+          </button>
+        </header>
+        <article class="doc-content">
+          <slot />
+        </article>
+      </main>
+    </div>
+    <script>
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      const label = document.getElementById('theme-toggle-label');
+
+      const applyTheme = (theme) => {
+        const isDark = theme === 'dark';
+        root.setAttribute('data-theme', theme);
+        btn?.setAttribute('aria-pressed', String(isDark));
+        btn?.setAttribute('data-theme', theme);
+        if (label) label.textContent = isDark ? 'Light mode' : 'Dark mode';
+      };
+
+      const saved = localStorage.getItem('theme');
+      const preferredDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initial = saved || (preferredDark ? 'dark' : 'light');
+      applyTheme(initial);
+
+      btn?.addEventListener('click', () => {
+        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem('theme', next);
+      });
+    </script>
+  </body>
+</html>

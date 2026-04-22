@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 
 # Python
 venv
+.vercel
+
+.astro

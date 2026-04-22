@@ -1,0 +1,49 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+
+export async function getStaticPaths() {
+  const modules = import.meta.glob('../../doc/**/*.mdx', { eager: true });
+  const toPrettyRoute = (relativeDocPath) => {
+    if (relativeDocPath === 'index') return '/';
+    if (relativeDocPath.endsWith('/index')) {
+      return `/${relativeDocPath.slice(0, -('/index'.length))}`;
+    }
+    return `/${relativeDocPath}`;
+  };
+  const toSourceRoute = (relativeDocPath) => `/${relativeDocPath}.mdx`;
+  const paths = [];
+
+  for (const [filePath, mod] of Object.entries(modules)) {
+    const relative = filePath
+      .replace('../../doc/', '')
+      .replace('.mdx', '');
+
+    const pretty = toPrettyRoute(relative);
+    const source = toSourceRoute(relative);
+    const title = mod.frontmatter?.title || 'LiRAYS SCADA Docs';
+
+    const addPath = (route) => {
+      const clean = route.replace(/^\//, '');
+      paths.push({
+        params: { slug: clean || undefined },
+        props: {
+          title,
+          Content: mod.default,
+          route: pretty,
+        },
+      });
+    };
+
+    addPath(pretty);
+    if (source !== pretty) addPath(source);
+  }
+
+  return paths;
+}
+
+const { Content, title, route } = Astro.props;
+---
+
+<DocsLayout title={title} currentPath={route}>
+  <Content />
+</DocsLayout>
