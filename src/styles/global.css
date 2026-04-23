@@ -190,6 +190,14 @@ body[data-nav-open='false'] .sidebar {
   flex: 0 0 auto;
 }
 
+.content-header-actions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+}
+
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -260,11 +268,6 @@ body[data-nav-open='false'] .sidebar {
   letter-spacing: 0.04em;
 }
 
-.theme-toggle {
-  margin-left: auto;
-  flex: 0 0 auto;
-}
-
 .toc-toggle,
 .nav-toggle {
   border: 1px solid color-mix(in srgb, var(--foreground) 24%, transparent);
@@ -280,6 +283,30 @@ body[data-nav-open='false'] .sidebar {
 
 .toc-toggle:hover,
 .nav-toggle:hover {
+  background: var(--muted);
+}
+
+.github-link {
+  border: 1px solid color-mix(in srgb, var(--foreground) 24%, transparent);
+  background: var(--card);
+  color: color-mix(in srgb, var(--foreground) 88%, transparent);
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+.site-link {
+  border: 1px solid color-mix(in srgb, var(--foreground) 24%, transparent);
+  background: var(--card);
+  color: color-mix(in srgb, var(--foreground) 88%, transparent);
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+.github-link:hover {
+  background: var(--muted);
+}
+
+.site-link:hover {
   background: var(--muted);
 }
 
@@ -562,6 +589,11 @@ body[data-toc-visible='true'] .toc-backdrop {
     flex: 0 0 auto;
   }
 
+  .content-header-actions {
+    gap: 0.4rem;
+    flex: 0 0 auto;
+  }
+
   .header-brand {
     margin-left: 0;
     margin-right: auto;
@@ -579,6 +611,8 @@ body[data-toc-visible='true'] .toc-backdrop {
 
   .toc-toggle,
   .nav-toggle,
+  .site-link,
+  .github-link,
   .theme-toggle {
     width: 2rem;
     min-width: 2rem;
