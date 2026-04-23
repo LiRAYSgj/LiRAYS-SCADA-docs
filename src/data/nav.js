@@ -7,6 +7,7 @@ export const nav = [
       { title: 'Docker', href: '/users/installation/docker' },
       { title: 'Linux', href: '/users/installation/linux' },
       { title: 'macOS', href: '/users/installation/macos' },
+      { title: 'LiRAYS CLI Tool', href: '/users/lirays_tool' },
       { title: 'Settings File', href: '/users/configuration/settings_file' },
       { title: 'First Steps', href: '/users/tutorials/first_steps' },
     ],

@@ -1,16 +1,57 @@
+import RoadmapTimelineTable from '../../src/components/RoadmapTimelineTable.astro';
+
+export const now_lanes = [
+  {
+    items: [
+      {
+        goal: 'Improve and extend widgets library',
+        status: 'In Progress',
+        window: '2026-10-31',
+        notes: 'Expand reusable UI/widget capabilities.',
+      },
+    ],
+  }
+];
+
+export const next_lanes = [
+  {
+    items: [
+      {
+        goal: 'Extend data acquisition methods',
+        status: 'Planned',
+        window: '2026-06-01 - 2026-12-31',
+        notes: 'Add additional ingestion/acquisition paths beyond SDK-only flows.',
+      },
+      {
+        goal: 'Create plugin for other products',
+        status: 'Planned',
+        window: '2026-06-01 - 2026-12-31',
+        notes: 'Grafana, Node RED, ...',
+      },
+    ],
+  }
+];
+
+export const later_lanes = [
+  {
+    items: [
+      {
+        goal: 'Explore integration with 3rd party products',
+        status: '-',
+        window: '2027-01-01 -',
+        notes: 'Evaluate direct integrations with scada products currently used in industry.',
+      },
+    ],
+  }
+];
+
 # Timeline
 
 ## Now
-
-| Goal | Status | Target Window | Notes |
-|---|---|---|---|
+<RoadmapTimelineTable lanes={now_lanes} />
 
 ## Next
-
-| Goal | Status | Target Window | Notes |
-|---|---|---|---|
+<RoadmapTimelineTable lanes={next_lanes} />
 
 ## Later
-
-| Goal | Status | Target Window | Notes |
-|---|---|---|---|
+<RoadmapTimelineTable lanes={later_lanes} />

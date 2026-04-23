@@ -2,30 +2,15 @@
 
 This guide covers package-based installation on macOS.
 
-## Before You Start
+## Download and Install
 
-Download URLs in this page use placeholders. Replace `&lt;version&gt;` with a real release artifact.
+Direct download [LiRAYSScada-0.1.0.pkg](https://github.com/LiRAYSgj/LiRAYS-Scada/releases/download/v0.1.0/LiRAYSScada-0.1.0.pkg)
 
-Package pattern:
-
-- `LiRAYSScada-&lt;version&gt;.pkg`
-
-Example link:
-
-- [LiRAYSScada-&lt;version&gt;.pkg](https://downloads.example.com/lirays-scada/macos/LiRAYSScada-%3Cversion%3E.pkg)
-
-## Download with `curl` (Optional)
+Install from Finder by double-clicking the `.pkg` file, or:
 
 ```sh
-curl -L -o LiRAYSScada-<version>.pkg "https://downloads.example.com/lirays-scada/macos/LiRAYSScada-<version>.pkg"
-```
-
-## Install
-
-Install from Finder by double-clicking the `.pkg` file, or run:
-
-```sh
-sudo installer -pkg ./LiRAYSScada-<version>.pkg -target /
+curl -L -o LiRAYSScada-0.1.0.pkg "https://github.com/LiRAYSgj/LiRAYS-Scada/releases/download/v0.1.0/LiRAYSScada-0.1.0.pkg"
+sudo installer -pkg ./LiRAYSScada-0.1.0.pkg -target /
 ```
 
 ## Verify Service

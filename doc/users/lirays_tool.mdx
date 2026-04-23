@@ -1,0 +1,45 @@
+# LiRAYS CLI Tool
+
+When you install the LiRAYS package, it also installs a CLI utility named `lirays`.
+
+Use it to manage local users, tokens, settings, service restart, and runtime metrics from terminal.
+
+## Basic Usage
+
+```sh
+lirays --help
+```
+
+Help output:
+
+```text
+Usage: lirays [--settings <path>] <command>
+```
+
+`--settings <path>` lets you point the CLI to a specific `settings.yaml` file instead of the default location.
+
+## Commands
+
+- `remove-admin`: Remove the `admin` user so the web UI prompts for a new admin password on next visit.
+- `create-admin`: Create the `admin` user if missing; fails if it already exists.
+- `create-operator`: Create the `operator` user if missing; fails if it already exists.
+- `remove-operator`: Delete the `operator` user.
+- `update-operator-password`: Update password for the `operator` user.
+- `update-admin-password`: Update password for the `admin` user.
+- `generate-admin-token`: Print a PAT token for the admin user.
+- `generate-operator-token`: Print a PAT token for the operator user.
+- `list-tokens`: List existing PAT tokens.
+- `revoke-token`: Revoke a PAT token by id or name.
+- `settings`: Print current settings grouped by section.
+- `settings-update`: Update a setting value.
+  Example: `settings-update server.bind_host 0.0.0.0`
+- `restart-service`: Restart LiRAYS service if currently running (macOS/Linux).
+- `watch-metrics`: Continuously refresh `{data_dir}/metrics/metrics_rt.txt`.
+
+## Example
+
+```sh
+lirays settings
+lirays settings-update server.bind_host 0.0.0.0
+lirays restart-service
+```

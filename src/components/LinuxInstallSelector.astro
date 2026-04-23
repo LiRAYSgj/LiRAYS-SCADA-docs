@@ -1,0 +1,141 @@
+---
+const releaseBase = 'https://github.com/LiRAYSgj/LiRAYS-Scada/releases/download/v0.1.0';
+const defaultFile = 'lirays-scada_0.1.0-1_amd64.deb';
+---
+
+<div class="linux-install-selector" data-linux-install-selector>
+  <div class="linux-install-controls">
+    <label for="linux-distro-select">Distribution</label>
+    <select id="linux-distro-select" data-linux-distro-select>
+      <option value="deb">Debian / Ubuntu (.deb)</option>
+      <option value="rpm">RHEL / Rocky / Fedora (.rpm)</option>
+    </select>
+  </div>
+  <div class="linux-install-controls">
+    <label for="linux-arch-select">Architecture</label>
+    <select id="linux-arch-select" data-linux-arch-select>
+      <option value="x86_64">x86_64 / amd64</option>
+      <option value="arm64">arm64 / aarch64</option>
+    </select>
+  </div>
+</div>
+
+<p>
+  Direct download:{' '}
+  <a data-linux-download-link href={`${releaseBase}/${defaultFile}`}>
+    <code data-linux-download-text>{defaultFile}</code>
+  </a>
+</p>
+
+<pre><code data-linux-command-block>{`# Generated from selectors above
+curl -fL "${releaseBase}/${defaultFile}" -o "${defaultFile}"
+sudo apt install -y "./${defaultFile}"`}</code></pre>
+
+<style>
+  .linux-install-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.9rem;
+    margin: 0 0 1rem;
+  }
+
+  .linux-install-controls {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .linux-install-controls label {
+    font-size: 0.9rem;
+    color: var(--muted-foreground);
+  }
+
+  .linux-install-controls select {
+    appearance: none;
+    border: 1px solid var(--border);
+    border-radius: 0.55rem;
+    padding: 0.6rem 0.7rem;
+    background: var(--card);
+    color: var(--foreground);
+    font: inherit;
+  }
+
+  .linux-install-controls select:focus {
+    outline: 2px solid color-mix(in srgb, var(--primary) 55%, transparent);
+    outline-offset: 1px;
+  }
+</style>
+
+<script>
+  (() => {
+    const RELEASE_BASE = 'https://github.com/LiRAYSgj/LiRAYS-Scada/releases/download/v0.1.0';
+    const artifacts = {
+      deb: {
+        x86_64: 'lirays-scada_0.1.0-1_amd64.deb',
+        arm64: 'lirays-scada_0.1.0-1_arm64.deb',
+      },
+      rpm: {
+        x86_64: 'lirays-scada-0.1.0-1.el9.x86_64.rpm',
+        arm64: 'lirays-scada-0.1.0-1.el9.aarch64.rpm',
+      },
+    };
+
+    const root = document.querySelector('[data-linux-install-selector]');
+    if (!root) return;
+
+    const scope = root.closest('.doc-content') || document;
+    const distroSelect = root.querySelector('[data-linux-distro-select]');
+    const archSelect = root.querySelector('[data-linux-arch-select]');
+    const downloadLink = scope.querySelector('[data-linux-download-link]');
+    const downloadText = scope.querySelector('[data-linux-download-text]');
+    const commandBlock = scope.querySelector('[data-linux-command-block]');
+    const uninstallCommand = scope.querySelector('[data-linux-uninstall-command]');
+    const uninstallCleanup = scope.querySelector('[data-linux-uninstall-cleanup]');
+
+    if (
+      !distroSelect ||
+      !archSelect ||
+      !downloadLink ||
+      !downloadText ||
+      !commandBlock
+    ) {
+      return;
+    }
+
+    const updateInstallSelection = () => {
+      const distro = distroSelect.value === 'rpm' ? 'rpm' : 'deb';
+      const arch = archSelect.value === 'arm64' ? 'arm64' : 'x86_64';
+      const file = artifacts[distro][arch];
+      const url = `${RELEASE_BASE}/${file}`;
+      const installLine =
+        distro === 'deb'
+          ? `sudo apt install -y "./${file}"`
+          : `sudo dnf install -y "./${file}"`;
+      const uninstallLine =
+        distro === 'deb'
+          ? 'sudo apt remove lirays-scada'
+          : 'sudo dnf remove lirays-scada';
+      const cleanupLines =
+        distro === 'deb'
+          ? [
+              'sudo apt purge lirays-scada',
+              'sudo rm -rf /etc/lirays-scada /var/lib/lirays-scada',
+            ]
+          : ['sudo rm -rf /etc/lirays-scada /var/lib/lirays-scada'];
+
+      const commandLines = [
+        `curl -fL "${url}" -o "${file}"`,
+        installLine,
+      ];
+
+      downloadLink.href = url;
+      downloadText.textContent = file;
+      commandBlock.textContent = commandLines.join('\n');
+      if (uninstallCommand) uninstallCommand.textContent = uninstallLine;
+      if (uninstallCleanup) uninstallCleanup.textContent = cleanupLines.join('\n');
+    };
+
+    distroSelect.addEventListener('change', updateInstallSelection);
+    archSelect.addEventListener('change', updateInstallSelection);
+    updateInstallSelection();
+  })();
+</script>
