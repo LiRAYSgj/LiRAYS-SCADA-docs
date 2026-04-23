@@ -17,11 +17,3 @@ npm run dev
 ```sh
 nvm use 22
 npm run build
-```
-
-## Deploy
-
-```sh
-nvm use 22
-vercel --prod
-```
